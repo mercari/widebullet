@@ -15,7 +15,7 @@ go get -u github.com/mercari/widebullet
 # Run
 
 ```
-./wbt -c config/example.toml
+wbt -c config/example.toml
 ```
 
 # Configuration
