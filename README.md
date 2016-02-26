@@ -6,12 +6,10 @@ Widebullet is the proxy server between JSON-RPC and RESTful API server.
 
 Production ready.
 
-# Build
+# Installation
 
 ```
-make gom
-make bundle
-make
+go get -u github.com/mercari/widebullet
 ```
 
 # Run
