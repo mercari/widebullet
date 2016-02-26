@@ -1,0 +1,12 @@
+Port = "29300"
+LogLevel = "error"
+Timeout = 5
+MaxIdleConnsPerHost = 100
+DisableCompression = false
+
+[[Endpoints]]
+Name = "ep-1"
+Ep = "127.0.0.1:30001"
+ProxySetHeaders = [
+    ["Host", "ep1.example.com"],
+]

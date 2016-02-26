@@ -1,0 +1,28 @@
+package server
+
+import (
+	"bytes"
+	"net/http"
+	"strings"
+
+	"github.com/fujiwara/fluent-agent-hydra/ltsv"
+	"github.com/mercari/widebullet"
+	"github.com/mercari/widebullet/jsonrpc"
+	"github.com/mercari/widebullet/wlog"
+)
+
+func AccessLog(r *http.Request, rr *[]jsonrpc.Request) {
+	records := make(map[string]interface{})
+	records["addr"] = r.RemoteAddr
+	records["length"] = r.ContentLength
+	records["headers"] = r.Header
+	records["body"] = *rr
+	buf := &bytes.Buffer{}
+	encoder := ltsv.NewEncoder(buf)
+	encoder.Encode(records)
+	wbt.AL.Out(wlog.Info, strings.TrimRight(buf.String(), "\n"))
+}
+
+func ErrorLog(level wlog.LogLevel, msg string, args ...interface{}) {
+	wbt.EL.Out(level, msg, args...)
+}
