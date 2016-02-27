@@ -1,11 +1,11 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"strings"
 	"testing"
-	"bytes"
 
 	"github.com/mercari/widebullet"
 	"github.com/mercari/widebullet/config"
@@ -35,7 +35,7 @@ func TestBuildHttpRequest(t *testing.T) {
 	var (
 		reqjs []jsonrpc.Request
 		reqhs []http.Request
-		buf bytes.Buffer
+		buf   bytes.Buffer
 	)
 	decoder := json.NewDecoder(strings.NewReader(payload))
 	decoder.UseNumber()

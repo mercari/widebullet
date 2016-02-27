@@ -65,10 +65,10 @@ func TestNewErrorLogger(t *testing.T) {
 func TestLevel2String(t *testing.T) {
 	assert := assert.New(t)
 
-	assert.Equal("debug",  level2String(Debug))
-	assert.Equal("info",   level2String(Info))
+	assert.Equal("debug", level2String(Debug))
+	assert.Equal("info", level2String(Info))
 	assert.Equal("notice", level2String(Notice))
-	assert.Equal("warn",   level2String(Warn))
-	assert.Equal("error",  level2String(Error))
-	assert.Equal("crit",   level2String(Crit))
+	assert.Equal("warn", level2String(Warn))
+	assert.Equal("error", level2String(Error))
+	assert.Equal("crit", level2String(Crit))
 }
