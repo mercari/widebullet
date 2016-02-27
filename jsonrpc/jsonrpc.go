@@ -46,7 +46,7 @@ func ValidateRequests(reqs *[]Request) error {
 		if _, ok := idMap[r.ID]; ok {
 			return fmt.Errorf("ID:%d is duplicated.", r.ID)
 		}
-		if err := ValidateRequest(&r); err != nil {
+		if err := validateRequest(&r); err != nil {
 			return err
 		}
 		idMap[r.ID] = true
@@ -54,7 +54,7 @@ func ValidateRequests(reqs *[]Request) error {
 	return nil
 }
 
-func ValidateRequest(r *Request) error {
+func validateRequest(r *Request) error {
 	if r.Version != Version {
 		return fmt.Errorf("malformed JSON-RPC version: %s", r.Version)
 	}
