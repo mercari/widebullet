@@ -12,7 +12,7 @@ import (
 func jsonRpc2Http(reqs *[]jsonrpc.Request) ([]jsonrpc.Response, error) {
 	wg := new(sync.WaitGroup)
 	resps := make([]jsonrpc.Response, len(*reqs))
-	// send requests to endoint conccurrently
+	// send requests to endpoint conccurrently
 	for i, reqj := range *reqs {
 		wg.Add(1)
 		go func(i int, reqj jsonrpc.Request) {
