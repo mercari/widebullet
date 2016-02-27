@@ -1,3 +1,4 @@
 gom 'github.com/fukata/golang-stats-api-handler',  :commit => 'e7ee1630fdb679c86ec8e3d0755e3576675fdb10'
 gom 'github.com/BurntSushi/toml',                  :commit => '5c4df71dfe9ac89ef6287afc05e4c1b16ae65a1e'
 gom 'github.com/fujiwara/fluent-agent-hydra/ltsv', :tag    => 'v0.1.6'
+gom 'github.com/stretchr/testify',                 :commit => '1f4a1643a57e798696635ea4c126e9127adb7d3c'
