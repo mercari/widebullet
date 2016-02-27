@@ -11,7 +11,7 @@ bundle:
 	gom install
 
 check:
-	gom test
+	gom test ./...
 
 fmt:
 	go fmt ./...

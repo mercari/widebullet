@@ -10,3 +10,10 @@ Ep = "127.0.0.1:30001"
 ProxySetHeaders = [
     ["Host", "ep1.example.com"],
 ]
+
+[[Endpoints]]
+Name = "ep-2"
+Ep = "127.0.0.1:30002"
+ProxySetHeaders = [
+    ["Host", "ep2.example.com"],
+]
