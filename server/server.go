@@ -21,18 +21,6 @@ var (
 	HttpClient http.Client
 )
 
-func sendTextResponse(w http.ResponseWriter, result string, code int) {
-	w.Header().Set("Content-Type", "text/plain")
-	w.Header().Set("Server", wbt.ServerHeader())
-	http.Error(w, result, code)
-}
-
-func sendJsonResponse(w http.ResponseWriter, result string) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Server", wbt.ServerHeader())
-	fmt.Fprint(w, result)
-}
-
 func RegisterHandlers() {
 	http.HandleFunc("/wbt", wideBulletHandler)
 	statsGo.PrettyPrintEnabled()
@@ -53,7 +41,7 @@ func Run() {
 
 	// Listen TCP Port
 	if _, err := strconv.Atoi(port); err == nil {
-		ErrorLog(wlog.Debug, "listen port:%s", port)
+		errorLog(wlog.Debug, "listen port:%s", port)
 		http.ListenAndServe(":"+port, nil)
 	}
 
@@ -71,18 +59,30 @@ func Run() {
 		if err != nil {
 			log.Fatal("failed to listen: " + sockPath)
 		}
-		ErrorLog(wlog.Debug, "listen port:%s", port)
+		errorLog(wlog.Debug, "listen port:%s", port)
 		http.Serve(l, nil)
 	}
 
-	ErrorLog(wlog.Error, "failed to listen port:%s", port)
+	errorLog(wlog.Error, "failed to listen port:%s", port)
+}
+
+func sendTextResponse(w http.ResponseWriter, result string, code int) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Server", wbt.ServerHeader())
+	http.Error(w, result, code)
+}
+
+func sendJsonResponse(w http.ResponseWriter, result string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Server", wbt.ServerHeader())
+	fmt.Fprint(w, result)
 }
 
 func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 	var reqs []jsonrpc.Request
 
 	if r.Method != "POST" {
-		AccessLog(r, &reqs)
+		accessLog(r, &reqs)
 		sendTextResponse(w, "method must be POST", http.StatusBadRequest)
 		return
 	}
@@ -90,29 +90,29 @@ func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	decoder.UseNumber()
 	if err := decoder.Decode(&reqs); err != nil {
-		AccessLog(r, &reqs)
+		accessLog(r, &reqs)
 		sendTextResponse(w, "request is malformed", http.StatusBadRequest)
 		return
 	}
 
-	AccessLog(r, &reqs)
+	accessLog(r, &reqs)
 
 	if err := jsonrpc.ValidateRequests(&reqs); err != nil {
-		ErrorLog(wlog.Error, err.Error())
+		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	resps, err := jsonRpc2Http(&reqs)
 	if err != nil {
-		ErrorLog(wlog.Error, err.Error())
+		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusBadGateway)
 		return
 	}
 
 	bytes, err := json.Marshal(&resps)
 	if err != nil {
-		ErrorLog(wlog.Error, err.Error())
+		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

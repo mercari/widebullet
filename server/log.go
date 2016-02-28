@@ -11,7 +11,7 @@ import (
 	"github.com/mercari/widebullet/wlog"
 )
 
-func AccessLog(r *http.Request, rr *[]jsonrpc.Request) {
+func accessLog(r *http.Request, rr *[]jsonrpc.Request) {
 	records := make(map[string]interface{})
 	records["addr"] = r.RemoteAddr
 	records["length"] = r.ContentLength
@@ -23,6 +23,6 @@ func AccessLog(r *http.Request, rr *[]jsonrpc.Request) {
 	wbt.AL.Out(wlog.Info, strings.TrimRight(buf.String(), "\n"))
 }
 
-func ErrorLog(level wlog.LogLevel, msg string, args ...interface{}) {
+func errorLog(level wlog.LogLevel, msg string, args ...interface{}) {
 	wbt.EL.Out(level, msg, args...)
 }

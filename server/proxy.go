@@ -20,7 +20,7 @@ func jsonRpc2Http(reqs *[]jsonrpc.Request) ([]jsonrpc.Response, error) {
 			reqh, err := buildHttpRequest(&reqj)
 			if err != nil {
 				resps[i] = buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), reqj.ID, 0)
-				ErrorLog(wlog.Error, err.Error())
+				errorLog(wlog.Error, err.Error())
 				return
 			}
 			start := time.Now()
@@ -29,19 +29,19 @@ func jsonRpc2Http(reqs *[]jsonrpc.Request) ([]jsonrpc.Response, error) {
 			ptime := (end.Sub(start)).Seconds()
 			if err != nil {
 				resps[i] = buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), reqj.ID, ptime)
-				ErrorLog(wlog.Error, err.Error())
+				errorLog(wlog.Error, err.Error())
 				return
 			}
 			defer resp.Body.Close()
 			if resp.StatusCode != 200 {
 				resps[i] = buildHttpError2JsonRpcErrorResponse(resp, reqj.ID, ptime)
-				ErrorLog(wlog.Error, "%#v is failed: %s", reqj, resp.Status)
+				errorLog(wlog.Error, "%#v is failed: %s", reqj, resp.Status)
 				return
 			}
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
 				resps[i] = buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), reqj.ID, ptime)
-				ErrorLog(wlog.Error, err.Error())
+				errorLog(wlog.Error, err.Error())
 				return
 			}
 			resps[i] = buildJsonRpcResponse(string(body), reqj.ID, ptime)
