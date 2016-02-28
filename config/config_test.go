@@ -22,6 +22,27 @@ func TestLoadExampleToml(t *testing.T) {
 	assert.Equal(2, len(eps))
 }
 
+func TestLoadGlobalConfig(t *testing.T) {
+	assert := assert.New(t)
+
+	configStr := `
+Port = "12345"
+LogLevel = "debug"
+Timeout = 10
+MaxIdleConnsPerHost = 1000
+DisableCompression = true
+`
+
+	c, err := LoadBytes([]byte(configStr))
+	assert.Nil(err)
+
+	assert.Equal("12345", c.Port)
+	assert.Equal("debug", c.LogLevel)
+	assert.Equal(10, c.Timeout)
+	assert.Equal(1000, c.MaxIdleConnsPerHost)
+	assert.Equal(true, c.DisableCompression)
+}
+
 func TestFindEp(t *testing.T) {
 	assert := assert.New(t)
 
