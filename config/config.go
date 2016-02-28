@@ -30,16 +30,23 @@ type EndPoint struct {
 	ProxySetHeaders [][]string
 }
 
+func LoadBytes(bytes []byte) (Config, error) {
+	var config Config
+	if err := toml.Unmarshal(bytes, &config); err != nil {
+		return config, err
+	}
+	return config, nil
+}
+
 func Load(confPath string) (Config, error) {
 	bytes, err := ioutil.ReadFile(confPath)
 	if err != nil {
 		return Config{}, err
 	}
 
-	var config Config
-
-	if err := toml.Unmarshal(bytes, &config); err != nil {
-		return config, err
+	config, err := LoadBytes(bytes)
+	if err != nil {
+		return Config{}, err
 	}
 
 	if config.Port == "" {
