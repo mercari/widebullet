@@ -9,7 +9,7 @@ Production ready.
 # Installation
 
 ```
-go get -u github.com/mercari/widebullet
+go get -u github.com/mercari/widebullet/...
 ```
 
 # Run
