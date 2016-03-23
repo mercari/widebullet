@@ -1,6 +1,6 @@
 # Widebullet
 
-Widebullet is the proxy server between JSON-RPC and RESTful API server.
+Widebullet is RESTful API gateway with JSON-RPC.
 
 # Status
 
