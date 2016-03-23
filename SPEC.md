@@ -1,6 +1,6 @@
 # Specification for Widebullet
 
-Widebullet is the proxy server between JSON-RPC and RESTful API server. It accepts a HTTP request based JSON-RPC.
+Widebullet is RESTful API gateway with JSON-RPC. It accepts a HTTP request based JSON-RPC.
 
 ## API
 
