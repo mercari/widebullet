@@ -1,0 +1,11 @@
+package: github.com/mercari/widebullet
+import:
+- package: github.com/BurntSushi/toml
+  version: v0.2.0
+- package: github.com/fujiwara/fluent-agent-hydra
+  subpackages:
+  - ltsv
+- package: github.com/fukata/golang-stats-api-handler
+  version: e7ee1630fdb679c86ec8e3d0755e3576675fdb10
+- package: github.com/stretchr/testify
+  version: v1.1.3

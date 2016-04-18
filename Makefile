@@ -1,23 +1,18 @@
+TARGETS_NOVENDOR=$(shell glide novendor)
+
 all: wbt
 
 wbt: cmd/wbt/*.go server/*.go jsonrpc/*.go config/*.go wlog/*.go
-	gom build github.com/mercari/widebullet/cmd/wbt
-
-gom:
-	go get -u github.com/mattn/gom
+	GO15VENDOREXPERIMENT=1 go build cmd/wbt/wbt.go
 
 bundle:
-	go get -u golang.org/x/tools/cmd/goimports
-	gom install
+	glide install
 
 check:
-	gom test ./...
+	GO15VENDOREXPERIMENT=1 go test $(TARGETS_NOVENDOR)
 
 fmt:
-	go fmt ./...
-
-imports:
-	goimports -w .
+	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 
 clean:
 	rm -rf wbt
