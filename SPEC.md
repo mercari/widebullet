@@ -12,6 +12,7 @@ Widebullet has the APIs below.
 ### POST /wbt
 
 Accepts a HTTP request based JSON-RPC and proxies each converted HTTP request to a corresponding endpoint.
+And User-Agent and X-Forwarded-For in a request header are forwarded.
 
 The JSON below is a request-body example.
 
