@@ -103,7 +103,7 @@ func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resps, err := jsonRpc2Http(&reqs)
+	resps, err := jsonRpc2Http(&reqs, &r.Header)
 	if err != nil {
 		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusBadGateway)

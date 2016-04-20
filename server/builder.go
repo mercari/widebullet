@@ -70,7 +70,7 @@ func buildHttpError2JsonRpcErrorResponse(resp *http.Response, id string, time fl
 	return buildJsonRpcErrorResponse(jsonrpc.InternalError, resp.Status, id, time)
 }
 
-func buildHttpRequest(reqj *jsonrpc.Request) (*http.Request, error) {
+func buildHttpRequest(reqj *jsonrpc.Request, forwardHeaders *http.Header) (*http.Request, error) {
 	var reqh *http.Request
 
 	ep, err := config.FindEp(wbt.Config, reqj.Ep)
@@ -98,7 +98,18 @@ func buildHttpRequest(reqj *jsonrpc.Request) (*http.Request, error) {
 			return reqh, err
 		}
 	}
-	reqh.Header.Set("User-Agent", wbt.ServerHeader())
+
+	ua := forwardHeaders.Get("User-Agent")
+	if ua == "" {
+		reqh.Header.Set("User-Agent", wbt.ServerHeader())
+	} else {
+		reqh.Header.Set("User-Agent", ua)
+	}
+
+	xForwardedFor := forwardHeaders.Get("X-Forwarded-For")
+	if xForwardedFor != "" {
+		reqh.Header.Set("X-Forwarded-For", xForwardedFor)
+	}
 
 	for _, headers := range ep.ProxySetHeaders {
 		if len(headers) < 2 {

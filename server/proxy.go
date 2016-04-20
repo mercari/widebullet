@@ -2,6 +2,7 @@ package server
 
 import (
 	"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 	"github.com/mercari/widebullet/wlog"
 )
 
-func jsonRpc2Http(reqs *[]jsonrpc.Request) ([]jsonrpc.Response, error) {
+func jsonRpc2Http(reqs *[]jsonrpc.Request, forwardHeaders *http.Header) ([]jsonrpc.Response, error) {
 	wg := new(sync.WaitGroup)
 	resps := make([]jsonrpc.Response, len(*reqs))
 	// send requests to endpoint conccurrently
@@ -17,7 +18,7 @@ func jsonRpc2Http(reqs *[]jsonrpc.Request) ([]jsonrpc.Response, error) {
 		wg.Add(1)
 		go func(i int, reqj jsonrpc.Request) {
 			defer wg.Done()
-			reqh, err := buildHttpRequest(&reqj)
+			reqh, err := buildHttpRequest(&reqj, forwardHeaders)
 			if err != nil {
 				resps[i] = buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), reqj.ID, 0)
 				errorLog(wlog.Error, err.Error())
