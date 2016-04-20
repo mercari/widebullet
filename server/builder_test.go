@@ -45,10 +45,13 @@ func TestBuildHttpRequest(t *testing.T) {
 	wbt.Config, err = config.Load("../config/example.toml")
 	assert.Nil(err)
 
+	headers := make(http.Header)
+	headers.Add("X-Forwarded-For", "127.0.0.1")
 	for _, reqj := range reqjs {
-		reqh, err := buildHttpRequest(&reqj)
+		reqh, err := buildHttpRequest(&reqj, &headers)
 		assert.Nil(err)
 		assert.Equal(wbt.ServerHeader(), reqh.Header.Get("User-Agent"))
+		assert.Equal("127.0.0.1", reqh.Header.Get("X-Forwarded-For"))
 		reqhs = append(reqhs, *reqh)
 	}
 
