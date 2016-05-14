@@ -2,7 +2,7 @@ TARGETS_NOVENDOR=$(shell glide novendor)
 
 all: wbt
 
-wbt: cmd/wbt/*.go server/*.go jsonrpc/*.go config/*.go wlog/*.go
+wbt: cmd/wbt/*.go server/*.go jsonrpc/*.go config/*.go wlog/*.go *.go
 	GO15VENDOREXPERIMENT=1 go build cmd/wbt/wbt.go
 
 bundle:
