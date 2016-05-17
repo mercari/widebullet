@@ -30,6 +30,12 @@ See [SPEC.md](https://github.com/mercari/widebullet/blob/master/SPEC.md) about d
 
  * Tatsuhiko Kubo [@cubicdaiya](https://github.com/cubicdaiya)
 
+# Contribution
+
+Please read the CLA below carefully before submitting your contribution.
+
+https://www.mercari.com/cla/
+
 # License
 
 Copyright 2016 Mercari, Inc.
