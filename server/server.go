@@ -69,7 +69,8 @@ func Run() {
 func sendTextResponse(w http.ResponseWriter, result string, code int) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.Header().Set("Server", wbt.ServerHeader())
-	http.Error(w, result, code)
+	w.WriteHeader(code)
+	fmt.Fprint(w, result)
 }
 
 func sendJsonResponse(w http.ResponseWriter, result string) {
