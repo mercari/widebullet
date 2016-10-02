@@ -15,8 +15,10 @@ func accessLog(r *http.Request, rr *[]jsonrpc.Request) {
 	records := make(map[string]interface{})
 	records["addr"] = r.RemoteAddr
 	records["length"] = r.ContentLength
-	records["headers"] = r.Header
-	records["body"] = *rr
+	if wbt.Config.LogLevel == "debug" {
+		records["headers"] = r.Header
+		records["body"] = *rr
+	}
 	buf := &bytes.Buffer{}
 	encoder := ltsv.NewEncoder(buf)
 	encoder.Encode(records)
