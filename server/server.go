@@ -82,8 +82,10 @@ func sendJsonResponse(w http.ResponseWriter, result string) {
 func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 	var reqs []jsonrpc.Request
 
+	stime := time.Now()
+
 	if r.Method != "POST" {
-		accessLog(r, &reqs)
+		accessLog(r, &reqs, stime, http.StatusBadRequest)
 		sendTextResponse(w, "method must be POST", http.StatusBadRequest)
 		return
 	}
@@ -91,14 +93,13 @@ func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	decoder.UseNumber()
 	if err := decoder.Decode(&reqs); err != nil {
-		accessLog(r, &reqs)
+		accessLog(r, &reqs, stime, http.StatusBadRequest)
 		sendTextResponse(w, "request is malformed", http.StatusBadRequest)
 		return
 	}
 
-	accessLog(r, &reqs)
-
 	if err := jsonrpc.ValidateRequests(&reqs); err != nil {
+		accessLog(r, &reqs, stime, http.StatusBadRequest)
 		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusBadRequest)
 		return
@@ -106,6 +107,7 @@ func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 
 	resps, err := jsonRpc2Http(&reqs, &r.Header)
 	if err != nil {
+		accessLog(r, &reqs, stime, http.StatusBadGateway)
 		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusBadGateway)
 		return
@@ -113,10 +115,13 @@ func wideBulletHandler(w http.ResponseWriter, r *http.Request) {
 
 	bytes, err := json.Marshal(&resps)
 	if err != nil {
+		accessLog(r, &reqs, stime, http.StatusInternalServerError)
 		errorLog(wlog.Error, err.Error())
 		sendTextResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	sendJsonResponse(w, string(bytes))
+
+	accessLog(r, &reqs, stime, http.StatusOK)
 }
