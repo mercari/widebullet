@@ -17,6 +17,8 @@ func TestLoadExampleToml(t *testing.T) {
 	assert.Equal(5, c.Timeout)
 	assert.Equal(100, c.MaxIdleConnsPerHost)
 	assert.Equal(false, c.DisableCompression)
+	assert.Equal(30, c.IdleConnTimeout)
+	assert.Equal(60, c.ProxyReadTimeout)
 
 	eps := c.Endpoints
 	assert.Equal(2, len(eps))
@@ -31,6 +33,8 @@ LogLevel = "debug"
 Timeout = 10
 MaxIdleConnsPerHost = 1000
 DisableCompression = true
+IdleConnTimeout = 90
+ProxyReadTimeout = 120
 `
 
 	c, err := LoadBytes([]byte(configStr))
@@ -41,6 +45,8 @@ DisableCompression = true
 	assert.Equal(10, c.Timeout)
 	assert.Equal(1000, c.MaxIdleConnsPerHost)
 	assert.Equal(true, c.DisableCompression)
+	assert.Equal(90, c.IdleConnTimeout)
+	assert.Equal(120, c.ProxyReadTimeout)
 }
 
 func TestFindEp(t *testing.T) {
