@@ -6,6 +6,10 @@ Widebullet is RESTful API gateway with JSON-RPC.
 
 Production ready.
 
+## Requirements
+
+Gaurun requires Go1.7.3 or later.
+
 # Installation
 
 ```
