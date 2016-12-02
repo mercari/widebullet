@@ -16,6 +16,9 @@ func buildRequestURI(ep, method, qs string) string {
 	if len(ep) > 7 && ep[:7] == "http://" {
 		return fmt.Sprintf("%s%s%s", ep, method, qs)
 	}
+	if len(ep) > 8 && ep[:8] == "https://" {
+		return fmt.Sprintf("%s%s%s", ep, method, qs)
+	}
 	return fmt.Sprintf("http://%s%s%s", ep, method, qs)
 }
 
