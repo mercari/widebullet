@@ -59,7 +59,7 @@ func TestFindEp(t *testing.T) {
 	ep, err = FindEp(c, "ep-2")
 	assert.Nil(err)
 	assert.Equal("ep-2", ep.Name)
-	assert.Equal("127.0.0.1:30002", ep.Ep)
+	assert.Equal("http://127.0.0.1:30002", ep.Ep)
 	assert.Equal("Host", ep.ProxySetHeaders[0][0])
 	assert.Equal("ep2.example.com", ep.ProxySetHeaders[0][1])
 
