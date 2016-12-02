@@ -25,4 +25,22 @@ A configuration for Widebullet has some sections. A example is [here](config/exa
 |Ep             |string        |Endpoint URL                       |       |    |
 |ProxySetHeaders|array of array|Headers appended on proxing request|       |    |
 
+As a scheme, **http** and **https** are available for **Ep**.
+
+```
+Ep = "http://example.com"
+# or
+Ep = "https://example.com"
+```
+
+If a scheme is not specified, **http** is used.
+
+```
+Ep = "example.com"
+```
+
+* example.com
+
+# About API
+
 See [SPEC.md](SPEC.md) about details for APIs.
