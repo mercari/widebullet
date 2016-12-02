@@ -13,6 +13,8 @@ const (
 	DefaultLogLevel            = "error"
 	DefaultTimeout             = 5
 	DefaultMaxIdleConnsPerHost = 100
+	DefaultIdleConnTimeout     = 30
+	DefaultProxyReadTimeout    = 60
 )
 
 type Config struct {
@@ -21,6 +23,8 @@ type Config struct {
 	Timeout             int
 	MaxIdleConnsPerHost int
 	DisableCompression  bool
+	IdleConnTimeout     int
+	ProxyReadTimeout    int
 	Endpoints           []EndPoint
 }
 
@@ -63,6 +67,14 @@ func Load(confPath string) (Config, error) {
 
 	if config.MaxIdleConnsPerHost <= 0 {
 		config.MaxIdleConnsPerHost = DefaultMaxIdleConnsPerHost
+	}
+
+	if config.IdleConnTimeout <= 0 {
+		config.IdleConnTimeout = DefaultIdleConnTimeout
+	}
+
+	if config.ProxyReadTimeout <= 0 {
+		config.ProxyReadTimeout = DefaultProxyReadTimeout
 	}
 
 	if len(config.Endpoints) == 0 {

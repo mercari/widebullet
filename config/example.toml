@@ -3,6 +3,8 @@ LogLevel = "error"
 Timeout = 5
 MaxIdleConnsPerHost = 100
 DisableCompression = false
+IdleConnTimeout = 30
+ProxyReadTimeout = 60
 
 [[Endpoints]]
 Name = "ep-1"

@@ -34,8 +34,14 @@ func Run() {
 	HttpClient = http.Client{
 		Timeout: time.Duration(wbt.Config.Timeout) * time.Second,
 		Transport: &http.Transport{
-			MaxIdleConnsPerHost: wbt.Config.MaxIdleConnsPerHost,
-			DisableCompression:  wbt.Config.DisableCompression,
+			DialContext: (&net.Dialer{
+				Timeout:   30 * time.Second,
+				KeepAlive: 30 * time.Second,
+			}).DialContext,
+			MaxIdleConnsPerHost:   wbt.Config.MaxIdleConnsPerHost,
+			DisableCompression:    wbt.Config.DisableCompression,
+			IdleConnTimeout:       time.Duration(wbt.Config.IdleConnTimeout) * time.Second,
+			ResponseHeaderTimeout: time.Duration(wbt.Config.ProxyReadTimeout) * time.Second,
 		},
 	}
 
