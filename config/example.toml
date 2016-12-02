@@ -15,7 +15,7 @@ ProxySetHeaders = [
 
 [[Endpoints]]
 Name = "ep-2"
-Ep = "127.0.0.1:30002"
+Ep = "http://127.0.0.1:30002"
 ProxySetHeaders = [
     ["Host", "ep2.example.com"],
 ]
