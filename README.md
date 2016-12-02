@@ -1,6 +1,6 @@
 # Widebullet
 
-Widebullet is RESTful API gateway with JSON-RPC.
+Widebullet is an API gateway with JSON-RPC.
 
 # Status
 
