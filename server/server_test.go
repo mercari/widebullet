@@ -15,15 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func userGetHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, fmt.Sprintf("%s", r.URL))
-}
-
-func itemGetHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, fmt.Sprintf("%s", r.URL))
-}
-
-func itemUpdateHandler(w http.ResponseWriter, r *http.Request) {
+func responseHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, fmt.Sprintf("%s", r.URL))
 }
 
@@ -31,11 +23,11 @@ func TestWideBulletHandler(t *testing.T) {
 	assert := assert.New(t)
 
 	muxGET := http.NewServeMux()
-	muxGET.HandleFunc("/user/get", userGetHandler)
-	muxGET.HandleFunc("/item/get", itemGetHandler)
+	muxGET.HandleFunc("/user/get", responseHandler)
+	muxGET.HandleFunc("/item/get", responseHandler)
 	go http.ListenAndServe(":30001", muxGET)
 	muxPOST := http.NewServeMux()
-	muxPOST.HandleFunc("/item/update", itemUpdateHandler)
+	muxPOST.HandleFunc("/item/update", responseHandler)
 	go http.ListenAndServe(":30002", muxPOST)
 
 	var err error
