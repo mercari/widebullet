@@ -13,10 +13,10 @@ import (
 )
 
 func buildRequestURI(ep, method, qs string) string {
-	if len(ep) > 7 && ep[:7] == "http://" {
+	if strings.HasPrefix(ep, "http://") {
 		return fmt.Sprintf("%s%s%s", ep, method, qs)
 	}
-	if len(ep) > 8 && ep[:8] == "https://" {
+	if strings.HasPrefix(ep, "https://") {
 		return fmt.Sprintf("%s%s%s", ep, method, qs)
 	}
 	return fmt.Sprintf("http://%s%s%s", ep, method, qs)
