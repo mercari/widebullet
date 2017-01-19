@@ -3,7 +3,6 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -12,7 +11,9 @@ import (
 	"time"
 
 	statsGo "github.com/fukata/golang-stats-api-handler"
+	"github.com/lestrrat/go-server-starter/listener"
 	"github.com/mercari/widebullet"
+	"github.com/mercari/widebullet/config"
 	"github.com/mercari/widebullet/jsonrpc"
 	"github.com/mercari/widebullet/wlog"
 )
@@ -21,18 +22,19 @@ var (
 	HttpClient http.Client
 )
 
-func RegisterHandlers() {
-	http.HandleFunc("/wbt", wideBulletHandler)
+// RegisterHandlers sets handler to serve.
+func RegisterHandlers(mux *http.ServeMux) {
+	mux.HandleFunc("/wbt", wideBulletHandler)
+
 	statsGo.PrettyPrintEnabled()
-	http.HandleFunc("/stat/go", statsGo.Handler)
+	mux.HandleFunc("/stat/go", statsGo.Handler)
 }
 
-func Run() {
-
-	port := wbt.Config.Port
-
+// SetupClient setups http.Client (which is globally used in this package)
+// with given config.
+func SetupClient(config *config.Config) {
 	HttpClient = http.Client{
-		Timeout: time.Duration(wbt.Config.Timeout) * time.Second,
+		Timeout: time.Duration(config.Timeout) * time.Second,
 		Transport: &http.Transport{
 			DialContext: (&net.Dialer{
 				Timeout:   30 * time.Second,
@@ -40,15 +42,44 @@ func Run() {
 			}).DialContext,
 			MaxIdleConnsPerHost:   wbt.Config.MaxIdleConnsPerHost,
 			DisableCompression:    wbt.Config.DisableCompression,
-			IdleConnTimeout:       time.Duration(wbt.Config.IdleConnTimeout) * time.Second,
-			ResponseHeaderTimeout: time.Duration(wbt.Config.ProxyReadTimeout) * time.Second,
+			IdleConnTimeout:       time.Duration(config.IdleConnTimeout) * time.Second,
+			ResponseHeaderTimeout: time.Duration(config.ProxyReadTimeout) * time.Second,
 		},
+	}
+}
+
+// Run starts the given server. By default, it tries to accept
+// requests from `go-server-starter`. If not then check config.Port
+// value. If nothing to listen, then returns error.
+func Run(server *http.Server, config *config.Config) error {
+
+	// If ServerStarterEnv is found, then use listerner from
+	// `go-server-starter`. Even if it fails, not terminate here
+	// but use the given config.Port
+	if v := os.Getenv(listener.ServerStarterEnvVarName); len(v) != 0 {
+		listeners, err := listener.ListenAll()
+		if err != nil {
+			errorLog(wlog.Error, "Failed to get listeners from go-server-starter: %s", err)
+		} else {
+			if len(listeners) == 0 {
+				errorLog(wlog.Error, "No listener to listen is found")
+			} else {
+				errorLog(wlog.Debug, "Start accepting request: %s", listeners[0].Addr())
+				return server.Serve(listeners[0])
+			}
+		}
+	}
+
+	port := config.Port
+	if len(port) == 0 {
+		return fmt.Errorf("no port to listen")
 	}
 
 	// Listen TCP Port
 	if _, err := strconv.Atoi(port); err == nil {
-		errorLog(wlog.Debug, "listen port:%s", port)
-		http.ListenAndServe(":"+port, nil)
+		errorLog(wlog.Debug, "Start listening: %s", port)
+		server.Addr = ":" + port
+		return server.ListenAndServe()
 	}
 
 	// Listen UNIX Socket
@@ -58,18 +89,20 @@ func Run() {
 		if err == nil && (fi.Mode()&os.ModeSocket) == os.ModeSocket {
 			err := os.Remove(sockPath)
 			if err != nil {
-				log.Fatal("failed to remove " + sockPath)
+				return fmt.Errorf("failed to remove socket: %s", sockPath)
 			}
 		}
+
 		l, err := net.Listen("unix", sockPath)
 		if err != nil {
-			log.Fatal("failed to listen: " + sockPath)
+			return fmt.Errorf("failed to listen socket %q: %s", sockPath, err)
 		}
-		errorLog(wlog.Debug, "listen port:%s", port)
-		http.Serve(l, nil)
+
+		errorLog(wlog.Debug, "Start accepting request: %s", l.Addr())
+		return server.Serve(l)
 	}
 
-	errorLog(wlog.Error, "failed to listen port:%s", port)
+	return fmt.Errorf("failed to listen port: %s", port)
 }
 
 func sendTextResponse(w http.ResponseWriter, result string, code int) {
