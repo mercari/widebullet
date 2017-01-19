@@ -8,7 +8,7 @@ Production ready.
 
 # Requirement
 
-Widebullet requires Go1.7.3 or later.
+Widebullet requires Go1.8 or later.
 
 # Installation
 
