@@ -1,34 +1,41 @@
 # Widebullet
 
-Widebullet is an API gateway with JSON-RPC.
+Widebullet is [JSON-RPC](http://www.jsonrpc.org/) base API gateway server. It implements [JSON-RPC batch](http://www.jsonrpc.org/specification#batch) endponts with extended format for HTTP REST request (see [SPEC](/SPEC.md)). For example, it receives one single JSON-RPC array which defines multiple HTTP requests and converts it into multiple concurrent HTTP requests. If you have multiple backend microservices and need to request them at same time for one transaction, Widebullet simplifies it.
 
 # Status
 
 Production ready.
 
-## Requirements
+# Requirement
 
-Gaurun requires Go1.7.3 or later.
+Widebullet requires Go1.7.3 or later.
 
 # Installation
 
-```
-go get -u github.com/mercari/widebullet/...
-```
-
-# Run
+Widebullet provides a executable named `wbt` to kick server. To install `wbt`, use `go get`,
 
 ```
-wbt -c config/example.toml
+$ go get -u github.com/mercari/widebullet/...
 ```
+
+# Usage
+
+To run `wbt`, you must provide configuration path via `-c` option (See [CONFIGURATION.md](/CONFIGURATION.md)) about details and [`config/example.toml`](/config/example.toml) for example usage.
+
+```
+$ wbt -c config/example.toml
+```
+
+Use `-help` to see more options.
+
 
 # Configuration
 
-See [CONFIGURATION.md](https://github.com/mercari/widebullet/blob/master/CONFIGURATION.md) about details.
+See [CONFIGURATION.md](/CONFIGURATION.md) about details.
 
 # Specification
 
-See [SPEC.md](https://github.com/mercari/widebullet/blob/master/SPEC.md) about details.
+See [SPEC.md](/SPEC.md) about details.
 
 # Comitters
 
