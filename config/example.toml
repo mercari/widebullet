@@ -5,6 +5,7 @@ MaxIdleConnsPerHost = 100
 DisableCompression = false
 IdleConnTimeout = 30
 ProxyReadTimeout = 60
+ShutdownTimeout = 15
 
 [[Endpoints]]
 Name = "ep-1"

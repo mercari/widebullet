@@ -15,6 +15,7 @@ const (
 	DefaultMaxIdleConnsPerHost = 100
 	DefaultIdleConnTimeout     = 30
 	DefaultProxyReadTimeout    = 60
+	DefaultShutdownTimeout     = 10
 )
 
 type Config struct {
@@ -25,6 +26,7 @@ type Config struct {
 	DisableCompression  bool
 	IdleConnTimeout     int
 	ProxyReadTimeout    int
+	ShutdownTimeout     int
 	Endpoints           []EndPoint
 }
 
@@ -75,6 +77,10 @@ func Load(confPath string) (Config, error) {
 
 	if config.ProxyReadTimeout <= 0 {
 		config.ProxyReadTimeout = DefaultProxyReadTimeout
+	}
+
+	if config.ShutdownTimeout <= 0 {
+		config.ShutdownTimeout = DefaultShutdownTimeout
 	}
 
 	if len(config.Endpoints) == 0 {

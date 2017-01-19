@@ -19,6 +19,7 @@ func TestLoadExampleToml(t *testing.T) {
 	assert.Equal(false, c.DisableCompression)
 	assert.Equal(30, c.IdleConnTimeout)
 	assert.Equal(60, c.ProxyReadTimeout)
+	assert.Equal(15, c.ShutdownTimeout)
 
 	eps := c.Endpoints
 	assert.Equal(2, len(eps))
