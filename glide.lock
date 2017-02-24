@@ -1,14 +1,28 @@
 hash: 6b7cb7ceeba0a15b18c6b8ce8aaf82922eca3222d9ec494f49f2ad94aa6e2aac
-updated: 2016-04-19T02:10:58.575125635+09:00
+updated: 2017-02-24T11:50:32.724179827+09:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bbd5bb678321a0d6e58f1099321dfa73391c1b6f
 - name: github.com/fujiwara/fluent-agent-hydra
-  version: 61c476832351c03903317e40bec50d67ead560e6
+  version: da59b0c40f6f3d8720dbfc1899a52c771e861ddd
   subpackages:
   - ltsv
 - name: github.com/fukata/golang-stats-api-handler
   version: e7ee1630fdb679c86ec8e3d0755e3576675fdb10
+- name: github.com/lestrrat/go-server-starter
+  version: f9cb0b066498d26a90fd918fe265adbb0ea02bcf
+  subpackages:
+  - listener
 - name: github.com/stretchr/testify
   version: f390dcf405f7b83c997eac1b06768bb9f44dec18
-devImports: []
+  subpackages:
+  - assert
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 2df174808ee097f90d259e432cc04442cf60be21
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
