@@ -1,8 +1,8 @@
-# Widebullet 
+# Widebullet
 
-[![Travis](https://img.shields.io/travis/mercari/widebullet.svg?style=flat-square)](https://travis-ci.org/mercari/widebullet)
+[![Travis](https://img.shields.io/travis/mercari/widebullet.svg?style=flat-square)](https://travis-ci.org/mercari/widebullet) [![Go Report Card](https://goreportcard.com/badge/github.com/mercari/widebullet)](https://goreportcard.com/report/github.com/mercari/widebullet)
 
-Widebullet is [JSON-RPC](http://www.jsonrpc.org/) base API gateway server. It implements [JSON-RPC batch](http://www.jsonrpc.org/specification#batch) endponts with extended format for HTTP REST request (see [SPEC](/SPEC.md)). For example, it receives one single JSON-RPC array which defines multiple HTTP requests and converts it into multiple concurrent HTTP requests. If you have multiple backend microservices and need to request them at same time for one transaction, Widebullet simplifies it.
+Widebullet is [JSON-RPC](http://www.jsonrpc.org/) base API gateway server. It implements [JSON-RPC batch](http://www.jsonrpc.org/specification#batch) endpoints with extended format for HTTP REST requests (see [SPEC](/SPEC.md)). For example, it receives one single JSON-RPC array which defines multiple HTTP requests and converts it into multiple concurrent HTTP requests. If you have multiple backend microservices and need to request them at same time for one transaction, Widebullet simplifies it.
 
 # Status
 
@@ -39,7 +39,7 @@ See [CONFIGURATION.md](/CONFIGURATION.md) about details.
 
 See [SPEC.md](/SPEC.md) about details.
 
-# Comitters
+# Committers
 
  * Tatsuhiko Kubo [@cubicdaiya](https://github.com/cubicdaiya)
 
