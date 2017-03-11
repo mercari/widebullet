@@ -13,10 +13,16 @@ Ep = "127.0.0.1:30001"
 ProxySetHeaders = [
     ["Host", "ep1.example.com"],
 ]
+ProxyPassHeaders = [
+    ["Authorization", "X-Auth-Token"]
+]
 
 [[Endpoints]]
 Name = "ep-2"
 Ep = "http://127.0.0.1:30002"
 ProxySetHeaders = [
     ["Host", "ep2.example.com"],
+]
+ProxyPassHeaders = [
+    ["Authorization", "X-Auth-Token2"]
 ]
