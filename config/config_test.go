@@ -62,6 +62,8 @@ func TestFindEp(t *testing.T) {
 	assert.Equal("127.0.0.1:30001", ep.Ep)
 	assert.Equal("Host", ep.ProxySetHeaders[0][0])
 	assert.Equal("ep1.example.com", ep.ProxySetHeaders[0][1])
+	assert.Equal("Authorization", ep.ProxyPassHeaders[0][0])
+	assert.Equal("X-Auth-Token", ep.ProxyPassHeaders[0][1])
 
 	ep, err = FindEp(c, "ep-2")
 	assert.Nil(err)
@@ -69,6 +71,8 @@ func TestFindEp(t *testing.T) {
 	assert.Equal("http://127.0.0.1:30002", ep.Ep)
 	assert.Equal("Host", ep.ProxySetHeaders[0][0])
 	assert.Equal("ep2.example.com", ep.ProxySetHeaders[0][1])
+	assert.Equal("Authorization", ep.ProxyPassHeaders[0][0])
+	assert.Equal("X-Auth-Token2", ep.ProxyPassHeaders[0][1])
 
 	_, err = FindEp(c, "ep-3")
 	assert.NotNil(err)

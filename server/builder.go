@@ -127,5 +127,24 @@ func buildHttpRequest(reqj *jsonrpc.Request, forwardHeaders *http.Header) (*http
 		}
 	}
 
+	for _, passHeaders := range ep.ProxyPassHeaders {
+		length := len(passHeaders)
+		if length < 2 {
+			continue
+		}
+		key := passHeaders[0]
+		realIndex := 0
+		passedValues := make([]string, length)
+		for _, headerKey := range passHeaders[1:] {
+			headerValue := forwardHeaders.Get(headerKey)
+			if len(headerValue) > 0 {
+				passedValues[realIndex] = headerValue
+				realIndex++
+			}
+		}
+		value := strings.Join(passedValues[:realIndex], ",")
+		reqh.Header.Set(key, value)
+	}
+
 	return reqh, nil
 }

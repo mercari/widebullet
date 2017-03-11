@@ -31,9 +31,10 @@ type Config struct {
 }
 
 type EndPoint struct {
-	Name            string
-	Ep              string
-	ProxySetHeaders [][]string
+	Name             string
+	Ep               string
+	ProxySetHeaders  [][]string
+	ProxyPassHeaders [][]string
 }
 
 func LoadBytes(bytes []byte) (Config, error) {
