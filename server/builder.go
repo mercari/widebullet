@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"strconv"
 
 	"github.com/mercari/widebullet"
 	"github.com/mercari/widebullet/config"
@@ -30,8 +31,10 @@ func buildURLEncodedString(params jsonrpc.RequestParams, method string) (string,
 			values.Set(k, v.(string))
 		case json.Number:
 			values.Set(k, fmt.Sprintf("%s", v))
+		case bool:
+			values.Set(k, strconv.FormatBool(v.(bool)))
 		default:
-			return "", fmt.Errorf("wbt supports only string and number")
+			return "", fmt.Errorf("wbt supports only string, number and bool")
 		}
 	}
 
