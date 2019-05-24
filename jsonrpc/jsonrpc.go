@@ -44,7 +44,7 @@ func ValidateRequests(reqs *[]Request) error {
 	idMap := make(map[string]bool, len(*reqs))
 	for _, r := range *reqs {
 		if _, ok := idMap[r.ID]; ok {
-			return fmt.Errorf("ID:%d is duplicated.", r.ID)
+			return fmt.Errorf("ID:%s is duplicated.", r.ID)
 		}
 		if err := validateRequest(&r); err != nil {
 			return err
