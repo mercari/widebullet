@@ -27,18 +27,21 @@ func sendHttpRequest(wg *sync.WaitGroup, reqj jsonrpc.Request, forwardHeaders *h
 		errorLog(wlog.Error, err.Error())
 		return
 	}
+
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		*respj = buildHttpError2JsonRpcErrorResponse(resp, reqj.ID, ptime)
-		errorLog(wlog.Error, "%#v is failed: %s", reqj, resp.Status)
-		return
-	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		*respj = buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), reqj.ID, ptime)
 		errorLog(wlog.Error, err.Error())
 		return
 	}
+
+	if resp.StatusCode != 200 {
+		*respj = buildHttpError2JsonRpcErrorResponse(resp.StatusCode, string(body), reqj.ID, ptime)
+		errorLog(wlog.Error, "%#v is failed: %s", reqj, resp.Status)
+		return
+	}
+
 	*respj = buildJsonRpcResponse(string(body), reqj.ID, ptime)
 }
 

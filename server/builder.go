@@ -65,12 +65,26 @@ func buildJsonRpcErrorResponse(code int, msg, id string, time float64) jsonrpc.R
 	}
 }
 
-func buildHttpError2JsonRpcErrorResponse(resp *http.Response, id string, time float64) jsonrpc.Response {
-	switch resp.StatusCode {
-	case http.StatusNotFound:
-		return buildJsonRpcErrorResponse(jsonrpc.MethodNotFoundError, resp.Status, id, time)
+func buildHttpError2JsonRpcErrorResponse(status_code int, err_msg string, id string, time float64) jsonrpc.Response {
+
+	r := &struct {
+		StatusCode int    `json:"status_code"`
+		Message    string `json:"message"`
+	} {
+		status_code,
+		err_msg,
 	}
-	return buildJsonRpcErrorResponse(jsonrpc.InternalError, resp.Status, id, time)
+
+	jsonrpc_err_msg, err := json.Marshal(r)
+	if err != nil {
+		return buildJsonRpcErrorResponse(jsonrpc.InternalError, err.Error(), id, time)
+	}
+
+	switch status_code {
+	case http.StatusNotFound:
+		return buildJsonRpcErrorResponse(jsonrpc.MethodNotFoundError, string(jsonrpc_err_msg), id, time)
+	}
+	return buildJsonRpcErrorResponse(jsonrpc.InternalError, string(jsonrpc_err_msg), id, time)
 }
 
 func buildHttpRequest(reqj *jsonrpc.Request, forwardHeaders *http.Header) (*http.Request, error) {
